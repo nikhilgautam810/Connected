@@ -1,11 +1,20 @@
 import { Dimensions, Image, StatusBar, StyleSheet, Text, TextInput, View, KeyboardAvoidingView, Platform, Pressable, ScrollView } from 'react-native'
 import { Color } from '../Components/Common'
+import { useState } from 'react'
+import VectorIcons from '../Components/VectorIcons'
 const { height, width } = Dimensions.get('screen')
+
 
 const SignIn = ({navigation}) => {
 
+    const [showPassword, setShowPassword] = useState('false')
+
     const NavigateToSignUp = () =>{
         navigation.navigate('SignUp')
+    }
+
+    const changePasswordVisibility = () =>{
+        setShowPassword(prevState => !prevState);
     }
 
     return (
@@ -52,8 +61,14 @@ const SignIn = ({navigation}) => {
                                     placeholder='Enter your password..'
                                     style={styles.textField}
                                     placeholderTextColor={Color.fontColorGrey}
-                                    secureTextEntry
+                                    secureTextEntry={!showPassword}
                                 />
+                                <Pressable style={styles.eyeBtn} onPress={()=>changePasswordVisibility()}>
+                                    {
+                                        showPassword ? (<VectorIcons type="Ionicons" name="eye-off" size={20} color="#0079FF" />)
+                                         : (<VectorIcons type="Ionicons" name="eye" size={20} color="#0079FF" /> )
+                                    }
+                                </Pressable>
                             </View>
                         </View>
                         <Pressable style={styles.forgetPasswordBtn}>
@@ -169,14 +184,17 @@ const styles = StyleSheet.create({
 
     },
     signInBtn:{
-        backgroundColor:Color.btnBGColor,
-        height:height/20,
+        borderWidth:0.2,
+        height: height/20,
         width:width/2,
         alignSelf:'center',
-        justifyContent:'center',
         alignItems:'center',
+        justifyContent:'center',
         borderRadius:10,
-        marginTop:10
+        marginVertical:20,
+        backgroundColor:Color.btnBGColor,
+        borderColor:Color.borderColor,
+        elevation:10
     },
     signInBtnTxt:{
         color:Color.white,
@@ -197,5 +215,9 @@ const styles = StyleSheet.create({
         fontSize: 13,
         fontWeight: '400',
         color: Color.btnBGColor
+    },
+    eyeBtn:{
+        position:'absolute',
+        right:12
     }
 })
